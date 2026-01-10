@@ -1,0 +1,72 @@
+# Papyrxis Workspace Configuration
+# Generated: Fri Jan  2 20:43:55 +0330 2026
+
+project:
+  type: book
+  category: technical
+  title: "MATHESIS"
+  author: "Mahdi"
+  email: "bitsgenix@gmail.com"
+  date: "auto"
+  url: "https://github.com/papyrxis/mathesis"
+
+build:
+  engine: pdflatex
+  bibtex: biber
+  output_dir: build
+  watch_mode: true
+
+version:
+  source: git
+  format: "v{major}.{minor}.{patch}"
+  fallback: "dev"
+
+components:
+  - fonts
+  - math
+  - graphics
+  - tables
+  - hyperref
+  - colors
+  - layout
+  - titles
+  - pagestyles
+  - env
+  - index
+  - bibliography
+  - code
+  - boxes
+  - commands/base
+
+features:
+  toc: true
+  index: true
+  bibliography: true
+  glossary: false
+  appendix: true
+
+frontmatter:
+  - cover
+  - title
+  - copyright
+  - preface
+  - introduction
+
+colors:
+  scheme: technical
+
+cover:
+  type: generated
+  generated:
+    style: modern
+    title_size: large
+    include_subtitle: true
+    include_author: true
+
+overrides:
+  components_dir: "configs"
+  allow:
+    - code.tex
+    - colors.tex
+    - fonts.tex
+    - env.tex

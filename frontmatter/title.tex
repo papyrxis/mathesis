@@ -1,0 +1,100 @@
+\begin{titlepage}
+	\addcontentsline{toc}{chapter}{Title Page}
+	\begin{tikzpicture}[remember picture, overlay]
+		\shade[top color=myblue!3, bottom color=myblue!8, middle color=white] 
+		(current page.south west) rectangle (current page.north east);
+		\foreach \x in {0,2,...,20} {
+			\foreach \y in {0,3,...,27} {
+				\node[circle, fill=myblue!8, inner sep=1pt] at ($(current page.south west) + (\x cm, \y cm)$) {};
+			}
+		}
+		
+		\draw[line width=8pt, color=myblue!70, rounded corners=5pt] 
+		($(current page.north west) + (0.5cm, -0.5cm)$) -- 
+		($(current page.north west) + (4cm, -0.5cm)$) -- 
+		($(current page.north west) + (4cm, -4cm)$);
+		
+		\draw[line width=8pt, color=myblue!70, rounded corners=5pt] 
+		($(current page.south east) + (-0.5cm, 0.5cm)$) -- 
+		($(current page.south east) + (-4cm, 0.5cm)$) -- 
+		($(current page.south east) + (-4cm, 4cm)$);
+		
+		% Floating accent elements
+		\node[circle, fill=myblue!30, inner sep=8pt] at ($(current page.center) + (6cm, 4cm)$) {};
+		\node[circle, fill=myblue!15, inner sep=12pt] at ($(current page.center) + (-7cm, -3cm)$) {};
+		\node[regular polygon, regular polygon sides=6, fill=myblue!20, inner sep=6pt] 
+		at ($(current page.center) + (8cm, -5cm)$) {};
+	
+	\end{tikzpicture}
+	
+\begin{center}
+
+	{\fontsize{84}{90}\selectfont
+		\begin{tikzpicture}[baseline=(title.base)]
+			\node[opacity=0.06, scale=2.2, text=black] (shadow) at (0.15,-0.15) {MATHESIS};
+			\node[opacity=0.15, scale=2.0, text=myblue!70] (bg) at (0.05,-0.05) {MATHESIS};
+			
+			\node (title) at (0,0) {
+				\textcolor{myblue}{
+					\textbf{
+						M\hspace{0.8em}%
+						A\hspace{0.6em}%
+						T\hspace{0.6em}%
+						H
+					}
+				}
+			};
+			\draw[line width=4pt, color=myblue!60, opacity=0.4] 
+			($(title.south west)+(0,-0.3)$) -- ($(title.south east)+(0,-0.3)$);
+		\end{tikzpicture}
+	}
+	\begin{tikzpicture}
+		\node (subtitle) {
+			\Large\textsc{\textcolor{myblue!70}{The Mathematical Foundations of Computing}}
+		};
+		% Decorative underline
+		\draw[line width=1.5pt, color=myblue!40, rounded corners=1pt] 
+		($(subtitle.south west) + (-0.5cm, -0.3cm)$) -- 
+		($(subtitle.south east) + (0.5cm, -0.3cm)$);
+	\end{tikzpicture}\\[3em]
+
+	\begin{minipage}{0.75\textwidth}
+		\centering
+		\large\itshape\color{gray!80}
+		\textit{"From ancient counting stones to quantum algorithms—\\
+			every data structure tells the story of human ingenuity."}
+	\end{minipage}\\[4em]
+	
+	
+	\vfill
+	\begin{tikzpicture}
+		\node (edition) {
+			\large\textsc{\textcolor{myblue!80}{Living First Edition}}
+		};
+		\node[below=0.5cm of edition, text=gray!70] {
+			\textit{Updated: \today}
+		};
+
+		% Modern accent lines
+		\draw[line width=3pt, color=myblue!30, rounded corners=2pt] 
+		($(edition.west) + (-1.5cm, 0.3cm)$) -- 
+		($(edition.west) + (-0.3cm, 0.3cm)$);
+		\draw[line width=3pt, color=myblue!30, rounded corners=2pt] 
+		($(edition.east) + (0.3cm, 0.3cm)$) -- 
+		($(edition.east) + (1.5cm, 0.3cm)$);
+	\end{tikzpicture}
+	
+	\vspace*{2cm}
+	
+	\begin{tikzpicture}
+		\node (copyright) {
+			\normalsize\textcolor{gray!60}{
+				\textcopyright\ 2025 \textbf{MATHESIS} 
+			}
+		};
+		\node[below=0.3cm of copyright, text=gray!50] {
+			\small\textsc{Creative Commons • Open Source}
+		};
+	\end{tikzpicture}
+\end{center}
+\end{titlepage}

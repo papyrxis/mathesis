@@ -1,0 +1,51 @@
+\usepackage{listings}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+\lstset{
+	basicstyle       = \ttfamily\small,
+	backgroundcolor  = \color{codebg},
+	frame            = leftline,
+	framerule        = 2pt,
+	rulecolor        = \color{arlizblue},
+	xleftmargin      = 15pt,
+	framexleftmargin = 15pt,
+	breaklines       = true,
+	breakatwhitespace= true,
+	showstringspaces = false,
+	showtabs         = false,
+	tabsize          = 4,
+	keepspaces       = true,
+	columns          = flexible,
+	numbers          = left,
+	numberstyle      = \tiny\color{arlizgray}\ttfamily,
+	numbersep        = 10pt,
+	stepnumber       = 1,
+	captionpos       = b,
+	aboveskip        = 12pt,
+	belowskip        = 12pt,
+	escapeinside     = {(*@}{@*)},
+	commentstyle     = \color{green!60!black}\itshape,
+	keywordstyle     = \color{arlizblue}\bfseries,
+	stringstyle      = \color{orange!80!black},
+	identifierstyle  = \color{textprimary},
+	morekeywords     = {array, structure, algorithm, complexity}
+}
+\algrenewcommand\algorithmicrequire{\textbf{Input:}}
+\algrenewcommand\algorithmicensure{\textbf{Output:}}
+\lstdefinestyle{pseudostyle}{
+	basicstyle       = \ttfamily\small,
+	mathescape       = true,
+	keywords         = {if, then, else, elif, fi, while, do, od, for, to, return, function, procedure, end, begin},
+	keywordstyle     = \color{arlizblue}\bfseries,
+	commentstyle     = \color{green!60!black}\itshape,
+	morecomment      = [l]{//},
+	literate         = 
+	{<=}{$\leq$}1
+	{>=}{$\geq$}1
+	{!=}{$\neq$}1
+	{->}{$\rightarrow$}1
+	{<-}{$\leftarrow$}1
+	{:=}{$\gets$}1
+	{=}{$=$}1
+}
