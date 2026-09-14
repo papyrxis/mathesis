@@ -1,0 +1,123 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v[0-9]+.[0-9]+.[0-9]+"        # v1.0.0
+      - "v[0-9]+.[0-9]+.[0-9]+-*"      # v1.0.0-hotfix (still stable, just suffixed)
+
+permissions:
+  contents: write
+
+jobs:
+  # ─────────────────────────────────────────────────────────────────────────
+  # Step 1 — compile every booklet (delegated to reusable workflow)
+  # ─────────────────────────────────────────────────────────────────────────
+  build:
+    name: Build (reusable)
+    uses: ./.github/workflows/build.yml
+    with:
+      version: ${{ github.ref_name }}   # e.g. "v1.0.0"
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # Step 2 — publish stable release
+  # ─────────────────────────────────────────────────────────────────────────
+  publish:
+    name: Publish Release
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # ── Download artifacts ────────────────────────────────────────────────
+      - name: Download booklet PDFs
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ needs.build.outputs.booklets-artifact }}
+          path: dist/booklets
+
+      - name: List files to be released
+        run: |
+          echo "=== Booklets ===" && ls -lh dist/booklets/
+
+      # ── Changelog from git log since last stable tag ──────────────────────
+      - name: Extract changelog
+        id: changelog
+        run: |
+          VERSION="${{ github.ref_name }}"
+
+          # Find the previous vX.Y.Z tag (skip pre-release tags)
+          PREV_TAG="$(git tag --list 'v*' \
+            | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' \
+            | sort -V \
+            | grep -v "$VERSION" \
+            | tail -1 || true)"
+
+          if [[ -n "$PREV_TAG" ]]; then
+            RANGE="${PREV_TAG}..HEAD"
+            SINCE_MSG="Changes since \`${PREV_TAG}\`"
+          else
+            RANGE="HEAD"
+            SINCE_MSG="Initial release"
+          fi
+
+          COMMITS="$(git log "$RANGE" --oneline --no-merges | head -30 || true)"
+
+          BUILD_TIME="$(date -u '+%Y-%m-%d %H:%M UTC')"
+
+          EN_LIST=""
+          for f in dist/booklets/*-EN.pdf; do
+            [ -f "$f" ] && EN_LIST="${EN_LIST}- \`$(basename "$f")\`\n"
+          done
+
+          FA_LIST=""
+          for f in dist/booklets/*-FA.pdf; do
+            [ -f "$f" ] && FA_LIST="${FA_LIST}- \`$(basename "$f")\`\n"
+          done
+
+          cat > release_body.md << EOF
+          ## 🚀 ${VERSION}
+
+          **${SINCE_MSG}** — built on ${BUILD_TIME}
+
+          ---
+
+          ### 📘 English Booklets
+
+          $(echo -e "$EN_LIST")
+
+          ### 📕 کتابچه‌های فارسی / Persian Booklets
+
+          $(echo -e "$FA_LIST")
+
+          ---
+
+          ### 📝 تغییرات / Changelog
+
+          \`\`\`
+          ${COMMITS:-No commits found}
+          \`\`\`
+
+          ---
+
+          > **نسخه پایدار** — برای آخرین build غیررسمی به \`latest-pre-release\` مراجعه کنید.
+          > *Stable release — for the latest unofficial build see \`latest-pre-release\`.*
+          EOF
+
+          echo "Generated release body:"
+          cat release_body.md
+
+      # ── Create the stable GitHub release ─────────────────────────────────
+      - name: Create stable release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "${{ github.ref_name }}" \
+            --title "Release ${{ github.ref_name }}" \
+            --notes-file release_body.md \
+            --verify-tag \
+            dist/booklets/*.pdf

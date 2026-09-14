@@ -1,0 +1,83 @@
+name: Build
+
+on:
+  workflow_call:
+    inputs:
+      version:
+        description: "Version string embedded in the build (e.g. v0.3.1-pre)"
+        required: false
+        type: string
+        default: "dev"
+    outputs:
+      booklets-artifact:
+        description: "Name of the uploaded booklets artifact"
+        value: ${{ jobs.booklets.outputs.artifact-name }}
+
+jobs:
+  # ─────────────────────────────────────────────────────────────────────────
+  # Booklets (pdflatex for en/, xelatex for fa/ — both need full TeX Live
+  # plus SVG-to-PDF conversion for covers). Uses the texlive/texlive:latest
+  # container so lmodern, biblatex, biber, tcolorbox, xepersian, etc. are
+  # all present out of the box; only the cover-rendering and Farsi-font
+  # pieces need installing on top.
+  # ─────────────────────────────────────────────────────────────────────────
+  booklets:
+    name: Build Booklets
+    runs-on: ubuntu-latest
+    container:
+      image: texlive/texlive:latest
+
+    outputs:
+      artifact-name: ${{ steps.set-name.outputs.name }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0           # needed for git describe inside px.py
+
+      - name: Install prerequisites
+        run: |
+          apt-get update -qq
+          apt-get install -y --no-install-recommends \
+            git make bash python3 \
+            librsvg2-bin \
+            fonts-freefont-ttf \
+            fonts-vazirmatn \
+            fontconfig
+          fc-cache -fv >/dev/null 2>&1 || true
+          echo "pdflatex: $(pdflatex --version | head -1)"
+          echo "xelatex:  $(xelatex --version | head -1)"
+          echo "biber:    $(biber --version)"
+          echo "python3:  $(python3 --version)"
+          echo "rsvg:     $(rsvg-convert --version)"
+          fc-list | grep -i vazir || echo "WARNING: Vazirmatn font not found!"
+
+      - name: Build all booklets (EN + FA)
+        env:
+          PROJECT_VERSION: ${{ inputs.version }}
+          BUILD_DATE: ${{ github.run_started_at }}
+        run: python3 scripts/px.py booklets build all
+
+      - name: Show logs on failure
+        if: failure()
+        run: |
+          for log in build/booklets/*/*/main.log; do
+            if [ -f "$log" ]; then
+              echo "\n========== $log =========="
+              grep -E "^!|font|Font|not found|Warning.*fontspec|cannot find" "$log" | head -40 || true
+            fi
+          done
+
+      - name: Set artifact name
+        id: set-name
+        run: echo "name=booklets-${{ inputs.version }}" >> "$GITHUB_OUTPUT"
+
+      - name: Upload booklet PDFs
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.set-name.outputs.name }}
+          path: build/booklets/*.pdf
+          retention-days: 30
+          if-no-files-found: error

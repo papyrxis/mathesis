@@ -1,0 +1,122 @@
+name: Pre-release
+
+on:
+  push:
+    branches:
+      - main
+      - master
+    paths-ignore:
+      - "**.md"
+      - ".editorconfig"
+      - ".gitignore"
+
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  # ─────────────────────────────────────────────────────────────────────────
+  # Step 1 — compile every booklet (delegated to reusable workflow)
+  # ─────────────────────────────────────────────────────────────────────────
+  build:
+    name: Build (reusable)
+    uses: ./.github/workflows/build.yml
+    with:
+      version: "latest-pre-release"
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # Step 2 — publish pre-release
+  # ─────────────────────────────────────────────────────────────────────────
+  publish:
+    name: Publish Pre-release
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout (for tag push)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Download booklet PDFs
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ needs.build.outputs.booklets-artifact }}
+          path: dist/booklets
+
+      - name: List files to be released
+        run: |
+          echo "=== Booklets ===" && ls -lh dist/booklets/
+
+      - name: Move latest-pre-release tag to HEAD
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag -f latest-pre-release HEAD
+          git push origin -f latest-pre-release
+
+      - name: Generate release notes
+        id: notes
+        run: |
+          SHORT_SHA="${{ github.sha }}"
+          SHORT_SHA="${SHORT_SHA:0:7}"
+          BUILD_TIME="$(date -u '+%Y-%m-%d %H:%M UTC')"
+
+          EN_LIST=""
+          for f in dist/booklets/*-EN.pdf; do
+            [ -f "$f" ] && EN_LIST="${EN_LIST}- $(basename "$f")\n"
+          done
+
+          FA_LIST=""
+          for f in dist/booklets/*-FA.pdf; do
+            [ -f "$f" ] && FA_LIST="${FA_LIST}- $(basename "$f")\n"
+          done
+
+          cat > release_body.md << EOF
+          ## 📖 Latest Pre-release Build
+
+          > **این یک نسخه پیش‌انتشار است.** آخرین build از شاخه اصلی — پایدار نیست.
+          > *This is a rolling pre-release — the latest build from \`main\`, not a stable version.*
+
+          | | |
+          |---|---|
+          | **Commit** | [\`${SHORT_SHA}\`](${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}) |
+          | **Built** | ${BUILD_TIME} |
+          | **Triggered by** | ${{ github.actor }} |
+
+          ---
+
+          ### 📘 English Booklets
+
+          $(echo -e "$EN_LIST")
+
+          ### 📕 کتابچه‌های فارسی / Persian Booklets
+
+          $(echo -e "$FA_LIST")
+
+          ---
+
+          > برای نسخه پایدار منتظر تگ \`vX.Y.Z\` باشید.
+          > For a stable version, wait for a \`vX.Y.Z\` tag release.
+          EOF
+
+          echo "Generated release body:"
+          cat release_body.md
+
+      - name: Delete existing latest-pre-release (if any)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release delete latest-pre-release --yes 2>/dev/null || true
+
+      - name: Create pre-release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create latest-pre-release \
+            --title "Latest Pre-release Build" \
+            --notes-file release_body.md \
+            --prerelease \
+            --target "${{ github.sha }}" \
+            dist/booklets/*.pdf
