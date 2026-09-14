@@ -69,14 +69,31 @@ jobs:
 
           BUILD_TIME="$(date -u '+%Y-%m-%d %H:%M UTC')"
 
+          # Order by booklet slug (01-, 02-, ... 14-), not alphabetically by
+          # output filename — "Abstract Algebra" would otherwise sort before
+          # "Mathematical Logic" even though it's booklet 04, not 01. Also
+          # write the same order to ordered_files.txt so the release's
+          # Assets list matches, instead of gh's default alphabetical sort.
           EN_LIST=""
-          for f in dist/booklets/*-EN.pdf; do
-            [ -f "$f" ] && EN_LIST="${EN_LIST}- \`$(basename "$f")\`\n"
+          FA_LIST=""
+          > ordered_files.txt
+
+          for conf in $(ls configs/booklets/*-en.conf | sort); do
+            name="$(grep '^OUTPUT_NAME=' "$conf" | sed -E 's/OUTPUT_NAME="(.*)"/\1/')"
+            f="dist/booklets/${name}.pdf"
+            if [ -f "$f" ]; then
+              EN_LIST="${EN_LIST}- \`$(basename "$f")\`\n"
+              echo "$f" >> ordered_files.txt
+            fi
           done
 
-          FA_LIST=""
-          for f in dist/booklets/*-FA.pdf; do
-            [ -f "$f" ] && FA_LIST="${FA_LIST}- \`$(basename "$f")\`\n"
+          for conf in $(ls configs/booklets/*-fa.conf | sort); do
+            name="$(grep '^OUTPUT_NAME=' "$conf" | sed -E 's/OUTPUT_NAME="(.*)"/\1/')"
+            f="dist/booklets/${name}.pdf"
+            if [ -f "$f" ]; then
+              FA_LIST="${FA_LIST}- \`$(basename "$f")\`\n"
+              echo "$f" >> ordered_files.txt
+            fi
           done
 
           cat > release_body.md << EOF
@@ -120,4 +137,4 @@ jobs:
             --title "Release ${{ github.ref_name }}" \
             --notes-file release_body.md \
             --verify-tag \
-            dist/booklets/*.pdf
+            $(cat ordered_files.txt)
