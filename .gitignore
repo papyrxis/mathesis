@@ -29,3 +29,7 @@ Thumbs.db
 .vscode/
 .idea/
 *.drp
+
+# Python
+__pycache__/
+cover.pdf
