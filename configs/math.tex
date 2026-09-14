@@ -1,0 +1,66 @@
+% ─────────────────────────────────────────────────────────────────────────────
+% Math typesetting — the packages and operators every booklet needs.
+%
+% Wired into both the EN and FA templates (booklets/templates/*/main.tex).
+% amsthm is loaded for its \theoremstyle machinery only; the actual
+% definition/theorem/example boxes are the tcolorbox environments in
+% configs/env.tex, not amsthm's \newtheorem counters.
+% ─────────────────────────────────────────────────────────────────────────────
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{amsthm}
+\usepackage{bm}
+
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+
+% Number sets
+\newcommand{\Naturals}{\ensuremath{\mathbb{N}}}
+\newcommand{\Integers}{\ensuremath{\mathbb{Z}}}
+\newcommand{\Rationals}{\ensuremath{\mathbb{Q}}}
+\newcommand{\Reals}{\ensuremath{\mathbb{R}}}
+\newcommand{\Complex}{\ensuremath{\mathbb{C}}}
+
+% Probability
+\newcommand{\Prob}{\ensuremath{\mathbb{P}}}
+\newcommand{\Expect}{\ensuremath{\mathbb{E}}}
+\DeclareMathOperator{\Var}{Var}
+
+% Set notation
+\newcommand{\set}[1]{\{#1\}}
+\newcommand{\setbuilder}[2]{\{#1 \mid #2\}}
+\newcommand{\symdiff}{\ensuremath{\triangle}}
+
+% ── Unicode math symbols typed directly into prose ───────────────────────────
+% Authors keep typing ℝ, π, ε, → etc. straight into chapter text instead of
+% $\mathbb{R}$, $\pi$, $\varepsilon$, $\to$ — harmless under xelatex (native
+% Unicode), a hard compile error under pdflatex. Map the ones that have
+% actually shown up so the en/ pipeline doesn't choke on them; \ensuremath
+% makes each mapping work whether it lands in text or math mode.
+\ifdefined\XeTeXversion
+\else
+  \usepackage{newunicodechar}
+  \newunicodechar{ℝ}{\ensuremath{\mathbb{R}}}
+  \newunicodechar{ℤ}{\ensuremath{\mathbb{Z}}}
+  \newunicodechar{ℕ}{\ensuremath{\mathbb{N}}}
+  \newunicodechar{ℚ}{\ensuremath{\mathbb{Q}}}
+  \newunicodechar{ℂ}{\ensuremath{\mathbb{C}}}
+  \newunicodechar{π}{\ensuremath{\pi}}
+  \newunicodechar{ε}{\ensuremath{\varepsilon}}
+  \newunicodechar{δ}{\ensuremath{\delta}}
+  \newunicodechar{ζ}{\ensuremath{\zeta}}
+  \newunicodechar{Θ}{\ensuremath{\Theta}}
+  \newunicodechar{→}{\ensuremath{\to}}
+  \newunicodechar{²}{\textsuperscript{2}}
+  \newunicodechar{³}{\textsuperscript{3}}
+  \newunicodechar{¹}{\textsuperscript{1}}
+  \newunicodechar{ⁿ}{\textsuperscript{\textit{n}}}
+  \newunicodechar{ᵖ}{\textsuperscript{\textit{p}}}
+  \newunicodechar{₀}{\textsubscript{0}}
+  \newunicodechar{₁}{\textsubscript{1}}
+\fi

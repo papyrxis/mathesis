@@ -1,0 +1,96 @@
+% ─────────────────────────────────────────────────────────────────────────────
+% Callout boxes — notebox, tipbox, warningbox, examplebox
+%
+% Style inspired by the papers/ workspace's tcolorbox setup: a thin colored
+% left border, generous but restrained padding, a small sans-serif title,
+% and no heavy background fill. Sharper and quieter than a boxed rule on
+% every side. Each box takes an optional key=value argument so a title can
+% be localized, e.g. \begin{notebox}[title=یادداشت] for the Persian editions.
+% ─────────────────────────────────────────────────────────────────────────────
+\usepackage{tcolorbox}
+\tcbuselibrary{most}
+
+\tcbset{
+  mathesiscallout/.style={
+    enhanced,
+    colback=white,
+    colframe=white,
+    colbacktitle=white,
+    boxrule=0pt,
+    sharp corners,
+    titlerule=0pt,
+    toptitle=2pt,
+    bottomtitle=2pt,
+    fonttitle=\sffamily\bfseries\small,
+    left=13pt,
+    right=10pt,
+    top=6pt,
+    bottom=7pt,
+    before skip=10pt,
+    after skip=14pt,
+    breakable,
+  },
+  mathesisblock/.style={
+    enhanced,
+    colback=white,
+    colframe=white,
+    boxrule=0pt,
+    sharp corners,
+    left=14pt,
+    right=12pt,
+    top=10pt,
+    bottom=10pt,
+    before skip=10pt,
+    after skip=14pt,
+    breakable,
+    parbox=false,
+  },
+}
+
+% ── Callout boxes ─────────────────────────────────────────────────────────────
+\newtcolorbox{notebox}[1][]{%
+  mathesiscallout,
+  borderline west={2pt}{0pt}{notecolor},
+  coltitle=notecolor,
+  title=Note,
+  #1
+}
+
+\newtcolorbox{tipbox}[1][]{%
+  mathesiscallout,
+  borderline west={2pt}{0pt}{tipcolor},
+  coltitle=tipcolor,
+  title=Tip,
+  #1
+}
+
+\newtcolorbox{warningbox}[1][]{%
+  mathesiscallout,
+  borderline west={2.5pt}{0pt}{warncolor},
+  coltitle=warncolor,
+  title=Warning,
+  #1
+}
+
+\newtcolorbox{examplebox}[1][]{%
+  mathesiscallout,
+  borderline west={2pt}{0pt}{examplecolor},
+  coltitle=examplecolor,
+  title=Example,
+  #1
+}
+
+\newtcolorbox{proofbox}[1][]{%
+  mathesisblock,
+  colback=subtle,
+  colframe=subtle,
+  #1
+}
+
+\newtcolorbox{remarkbox}[1][]{%
+  mathesiscallout,
+  borderline west={2pt}{0pt}{arlizgray},
+  coltitle=arlizgray,
+  title=Remark,
+  #1
+}

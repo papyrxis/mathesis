@@ -1,0 +1,47 @@
+<svg viewBox="0 0 1000 1420" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0A0E1A"/>
+      <stop offset="100%" stop-color="#131A2C"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="0" y="0" width="1000" height="1420" fill="url(#bg)"/>
+
+  <text x="500.0" y="150" text-anchor="middle" direction="rtl"
+        font-family="Vazirmatn, Tahoma, sans-serif" font-size="20"
+        letter-spacing="3" fill="#C9A467">متسیس &#183; کتابچه‌ی ۱۱</text>
+
+  <g transform="translate(500.0,232)">
+    <rect x="-22" y="-22" width="44" height="44"
+          transform="rotate(45)" fill="none" stroke="#C9A467"
+          stroke-width="1.6" opacity="0.9"/>
+    <circle cx="0" cy="0" r="4.2" fill="#C9A467"/>
+  </g>
+
+  <text x="500.0" text-anchor="middle" direction="rtl"
+        font-family="Amiri, 'Noto Naskh Arabic', serif" font-weight="700"
+        font-size="62" fill="#EDE7D9">
+    <tspan x="500.0" y="330">نظریه احتمال</tspan>
+  </text>
+
+  <line x1="410.0" y1="386" x2="590.0" y2="386"
+        stroke="#C9A467" stroke-width="1.4"/>
+
+  <text x="500.0" text-anchor="middle" direction="rtl"
+        font-family="Amiri, 'Noto Naskh Arabic', serif" font-style="italic"
+        font-size="25" fill="#B79A6E">
+    <tspan x="500.0" y="448">عدم قطعیت، با همان دقتی که به</tspan>
+    <tspan x="500.0" y="488">قطعیت داده می‌شود.</tspan>
+  </text>
+
+  <text x="500.0" y="1225" text-anchor="middle" direction="rtl"
+        font-family="Amiri, 'Noto Naskh Arabic', serif" font-weight="700"
+        font-size="30" fill="#EDE7D9">مهدی ممشلی</text>
+  <text x="500.0" y="1268" text-anchor="middle"
+        font-family="Vazirmatn, Tahoma, sans-serif" font-size="19"
+        letter-spacing="4" fill="#C9A467">GENIX</text>
+  <text x="500.0" y="1302" text-anchor="middle" direction="rtl"
+        font-family="Vazirmatn, Tahoma, sans-serif" font-size="16"
+        fill="#7C879C">ویرایش اول ۱۴۰۵</text>
+</svg>

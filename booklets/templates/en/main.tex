@@ -1,0 +1,52 @@
+%!TEX TS-program = pdflatex
+%!TEX encoding = UTF-8 Unicode
+\documentclass[11pt,oneside,openany]{book}
+
+\input{@CONFIGS_PATH@/fonts}
+\input{@CONFIGS_PATH@/colors}
+\input{@CONFIGS_PATH@/boxes}
+\input{@CONFIGS_PATH@/env}
+\input{@CONFIGS_PATH@/math}
+\input{@CONFIGS_PATH@/code}
+\input{@CONFIGS_PATH@/commands}
+
+\input{meta}
+\usepackage[a5paper,margin=2.2cm,headheight=22pt]{geometry}
+\input{@CONFIGS_PATH@/bibliography}
+\addbibresource{@BIB_PATH@}
+\usepackage[breaklinks=true,pdfpagelabels=true]{hyperref}
+\input{@BOOKLETS_CONFIGS_PATH@/pagestyles}
+\usepackage{pdfpages}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=primary,
+  citecolor=primary,
+  urlcolor=accent,
+  pdftitle={\BookletPDFTitle},
+  pdfauthor={\BookletPDFAuthor},
+  pdfsubject={\BookletPDFSubject},
+  pdfkeywords={\BookletPDFKeywords}
+}
+\begin{document}
+
+\frontmatter
+\input{@SHARED_PATH@/cover/cover}
+\BookletCover{frontmatter/cover}
+\input{@SHARED_PATH@/en/frontmatter/title}
+\input{@SHARED_PATH@/en/frontmatter/copyright}
+\tableofcontents
+\input{@SHARED_PATH@/en/frontmatter/about-mathesis}
+\input{@SHARED_PATH@/en/frontmatter/about-author}
+\input{@SHARED_PATH@/en/frontmatter/acknowledgments}
+\input{@SHARED_PATH@/en/frontmatter/how-to-read}
+\input{frontmatter/preface}
+
+\mainmatter
+@CHAPTERS@
+\backmatter
+\InputIfFileExists{backmatter/conclusion}{}{}
+\input{backmatter/note}
+\input{@SHARED_PATH@/en/backmatter/references}
+\InputIfFileExists{backmatter/glossary}{}{}
+
+\end{document}

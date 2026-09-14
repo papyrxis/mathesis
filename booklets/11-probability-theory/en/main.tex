@@ -1,0 +1,61 @@
+%!TEX TS-program = pdflatex
+%!TEX encoding = UTF-8 Unicode
+\documentclass[11pt,oneside,openany]{book}
+
+\input{../../../configs/fonts}
+\input{../../../configs/colors}
+\input{../../../configs/boxes}
+\input{../../../configs/env}
+\input{../../../configs/math}
+\input{../../../configs/code}
+\input{../../../configs/commands}
+
+\input{meta}
+\usepackage[a5paper,margin=2.2cm,headheight=22pt]{geometry}
+\input{../../../configs/bibliography}
+\addbibresource{../references/paper.bib}
+\usepackage[breaklinks=true,pdfpagelabels=true]{hyperref}
+\input{../../configs/pagestyles}
+\usepackage{pdfpages}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=primary,
+  citecolor=primary,
+  urlcolor=accent,
+  pdftitle={\BookletPDFTitle},
+  pdfauthor={\BookletPDFAuthor},
+  pdfsubject={\BookletPDFSubject},
+  pdfkeywords={\BookletPDFKeywords}
+}
+\begin{document}
+
+\frontmatter
+\input{../../shared/cover/cover}
+\BookletCover{frontmatter/cover}
+\input{../../shared/en/frontmatter/title}
+\input{../../shared/en/frontmatter/copyright}
+\tableofcontents
+\input{../../shared/en/frontmatter/about-mathesis}
+\input{../../shared/en/frontmatter/about-author}
+\input{../../shared/en/frontmatter/acknowledgments}
+\input{../../shared/en/frontmatter/how-to-read}
+\input{frontmatter/preface}
+
+\mainmatter
+\input{chapters/chapter01}
+\input{chapters/chapter02}
+\input{chapters/chapter03}
+\input{chapters/chapter04}
+\input{chapters/chapter05}
+\input{chapters/chapter06}
+\input{chapters/chapter07}
+\input{chapters/chapter08}
+\input{chapters/chapter09}
+\input{chapters/chapter10}
+\backmatter
+\InputIfFileExists{backmatter/conclusion}{}{}
+\input{backmatter/note}
+\input{../../shared/en/backmatter/references}
+\InputIfFileExists{backmatter/glossary}{}{}
+
+\end{document}

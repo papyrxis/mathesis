@@ -1,0 +1,27 @@
+% ─────────────────────────────────────────────────────────────────────────────
+% Cross-language convenience macros
+%
+% \lr{...} / \rl{...} wrap a short run of Latin or Persian text so it keeps
+% its own direction inside paragraphs of the opposite script (an email
+% address inside Persian prose, a Persian word inside an English aside).
+% In the fa/ pipeline (xepersian) these already exist and take care of both
+% direction *and* switching to the right font — this file must not redefine
+% them there. In the en/ pipeline (plain pdflatex, no bidi engine at all)
+% \lr and \rl are not needed for direction, so they fall back to the
+% identity: \lr{#1} just typesets #1. \ltr / \rtl are plain aliases kept
+% for readability in shared content that may be read by either engine.
+%
+% booklets/templates/fa/main.tex loads this file *after* \usepackage{xepersian},
+% so \providecommand below sees \lr and \rl already defined and leaves them
+% alone; only \ltr and \rtl get defined there. booklets/templates/en/main.tex
+% loads it standalone, so all four get the identity fallback.
+% ─────────────────────────────────────────────────────────────────────────────
+\providecommand{\lr}[1]{#1}
+\providecommand{\rl}[1]{#1}
+\providecommand{\ltr}[1]{#1}
+\providecommand{\rtl}[1]{#1}
+
+% Small text macros used across chapters regardless of language.
+\providecommand{\term}[1]{\textit{#1}}
+\providecommand{\keyword}[1]{\textcolor{accent}{\textbf{#1}}}
+\providecommand{\email}[1]{\href{mailto:#1}{\lr{\texttt{#1}}}}

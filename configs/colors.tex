@@ -1,24 +1,52 @@
+% ─────────────────────────────────────────────────────────────────────────────
+% Mathesis color palette
+%
+% One coherent brand across cover, interior pages, and callout boxes:
+% a deep navy for structure (headers, rules, titles) and a warm gold accent
+% that echoes the cover art. Every color used anywhere else in configs/
+% (env.tex, code.tex, boxes.tex, booklets/configs/pagestyles.tex) is defined
+% here — nothing should be left implicitly relying on a name from another
+% package or from the shared .pxis component library.
+% ─────────────────────────────────────────────────────────────────────────────
 \usepackage{xcolor}
 \usepackage{xstring}
 
-\definecolor{algorithm_blue}{RGB}{0, 86, 179}         
-\definecolor{algorithm_lightblue}{RGB}{51, 122, 204}  
-\definecolor{algorithm_navy}{RGB}{25, 45, 85}         
-\definecolor{algorithm_gray}{RGB}{95, 99, 104}        
-\definecolor{headercolor}{RGB}{25, 45, 85}       
-\definecolor{headerrule}{RGB}{0, 86, 179}        
-\definecolor{footercolor}{RGB}{95, 99, 104}      
-\definecolor{footerrule}{RGB}{180, 185, 190}     
-\definecolor{codebg}{RGB}{248, 249, 250}         
-\definecolor{textprimary}{RGB}{33, 37, 41}     
-\definecolor{textsecondary}{RGB}{108, 117, 125}
-\colorlet{myblue}{algorithm_blue}
-\colorlet{lightgray}{codebg}
+% ── Brand core ────────────────────────────────────────────────────────────────
+\definecolor{primary}{RGB}{25, 45, 85}          % deep navy   — titles, headers, rules
+\definecolor{accent}{RGB}{178, 141, 74}         % warm gold   — echoes the cover art
+\definecolor{ink}{RGB}{28, 30, 33}              % near-black  — body text
+\definecolor{textprimary}{RGB}{28, 30, 33}
+\definecolor{textsecondary}{RGB}{100, 108, 118} % muted slate — captions, running heads
+\colorlet{textgray}{textsecondary}
+
+% ── Surfaces ──────────────────────────────────────────────────────────────────
+\definecolor{subtle}{RGB}{242, 244, 248}        % faint background fill
+\definecolor{border}{RGB}{200, 205, 212}        % hairline rules, table borders
+\definecolor{codebackground}{RGB}{247, 248, 250}
+\colorlet{codebg}{codebackground}
+
+% ── Header / footer (booklets/configs/pagestyles.tex) ────────────────────────
+\colorlet{headercolor}{primary}
+\colorlet{headerrule}{accent}
+\colorlet{footercolor}{textsecondary}
+\colorlet{footerrule}{border}
 \colorlet{headerblue}{headercolor}
 \colorlet{footergray}{footercolor}
-\definecolor{primary}{RGB}{30, 40, 50}
-\definecolor{accent}{RGB}{80, 120, 160}
-\definecolor{subtle}{RGB}{240, 242, 245}
-\definecolor{border}{RGB}{200, 205, 210}
-\definecolor{textgray}{RGB}{60, 60, 60}
-\definecolor{codebackground}{RGB}{248, 248, 250} 
+
+% ── Mathesis blue/navy/gray family ───────────────────────────────────────────
+% configs/env.tex and configs/code.tex refer to these names directly, so they
+% must resolve regardless of which callout/box style is active.
+\definecolor{arlizblue}{RGB}{0, 86, 179}
+\definecolor{arlizlightblue}{RGB}{51, 122, 204}
+\definecolor{arliznavy}{RGB}{25, 45, 85}
+\definecolor{arlizgray}{RGB}{95, 99, 104}
+\colorlet{myblue}{arlizblue}
+\colorlet{lightgray}{codebg}
+
+% ── Callout-box accents (configs/boxes.tex) ──────────────────────────────────
+\definecolor{notecolor}{RGB}{0, 86, 179}
+\definecolor{tipcolor}{RGB}{25, 140, 110}
+\definecolor{warncolor}{RGB}{180, 60, 20}
+\definecolor{defcolor}{RGB}{25, 45, 85}
+\definecolor{theocolor}{RGB}{40, 80, 140}
+\definecolor{examplecolor}{RGB}{95, 99, 104}

@@ -1,0 +1,15 @@
+\newcommand{\BookletCover}[1]{%
+  \IfFileExists{#1.pdf}{%
+    \clearpage
+    \thispagestyle{empty}%
+    \includepdf[%
+      pages=1,%
+      pagecommand={\thispagestyle{empty}},%
+      fitpaper=true%
+    ]{#1}%
+    \clearpage
+  }{%
+    % No cover.pdf yet for this edition (e.g. cover.svg hasn't been added
+    % or converted) --- skip silently rather than erroring the build.
+  }%
+}

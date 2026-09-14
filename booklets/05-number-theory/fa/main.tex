@@ -1,0 +1,112 @@
+%!TEX TS-program = xelatex
+%!TEX encoding = UTF-8 Unicode
+\documentclass[11pt,oneside,openany]{book}
+
+\input{../../../configs/colors}
+\input{../../../configs/boxes}
+\input{../../../configs/env}
+\input{../../../configs/math}
+\input{../../../configs/code}
+
+\input{meta}
+\usepackage[a5paper,margin=2.2cm,headheight=22pt]{geometry}
+\usepackage{microtype}
+\emergencystretch=3em
+\tolerance=4000
+\hbadness=4000
+\input{../../../configs/bibliography}
+\addbibresource{../references/paper.bib}
+\usepackage[breaklinks=true]{hyperref}
+\input{../../configs/pagestyles}
+
+\usepackage{pdfpages}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=primary,
+  citecolor=primary,
+  urlcolor=accent,
+  pdftitle={\BookletPDFTitle},
+  pdfauthor={\BookletPDFAuthor},
+  pdfsubject={\BookletPDFSubject},
+  pdfkeywords={\BookletPDFKeywords}
+}
+\usepackage{xepersian}
+\settextfont[
+  Scale=1,
+  BoldFont=Vazirmatn-Bold.ttf,
+  Path=/usr/share/fonts/truetype/vazirmatn/
+]{Vazirmatn-Regular.ttf}
+\setlatintextfont[
+  Scale=0.95,
+  Ligatures=TeX,
+  BoldFont=FreeSerifBold.ttf,
+  ItalicFont=FreeSerifItalic.ttf,
+  BoldItalicFont=FreeSerifBoldItalic.ttf,
+  Path=/usr/share/fonts/truetype/freefont/
+]{FreeSerif.ttf}
+\setdigitfont[
+  Path=/usr/share/fonts/truetype/vazirmatn/,
+  BoldFont=Vazirmatn-Bold.ttf
+]{Vazirmatn-Regular.ttf}
+
+% Cross-language convenience macros (\lr, \rl already exist via xepersian
+% above; this only adds \ltr / \rtl aliases — see configs/commands.tex).
+\input{../../../configs/commands}
+
+\renewcommand{\BookletChapterWord}{فصل}
+
+% xepersian's book-xepersian.def (loaded by \usepackage{xepersian} above)
+% redefines \frontmatter itself — to switch page numbering to harfi — which
+% silently discards the \pagestyle{frontmatter} + \fancypagestyle{plain}
+% chaining booklets/configs/pagestyles.tex set up before xepersian loaded.
+% Re-apply that chaining on top of xepersian's version now.
+\let\oldfrontmatter\frontmatter
+\renewcommand{\frontmatter}{%
+  \oldfrontmatter
+  \pagestyle{frontmatter}
+  \fancypagestyle{plain}{\MathesisFrontmatterStyle}
+}
+
+\providecommand{\frontmatterpagenumber}{}
+\providecommand{\mainmatterpagenumber}{}
+
+\DeclareFieldFormat{url}{\lr{\url{#1}}}
+\DeclareFieldFormat{urldate}{\lr{(visited on #1)}}
+\renewcommand*{\mkbibfootnote}[1]{\LTRfootnote{#1}}
+
+\renewcommand{\headerfont}{\bfseries\small}
+\renewcommand{\footerfont}{\scriptsize}
+\renewcommand{\pagenumberfont}{\bfseries\small}
+
+\renewcommand{\sffamily}{\fontfamily{\rmdefault}\selectfont}
+\AtEveryBibitem{%
+  \iffieldequalstr{langid}{farsi}{}{\setLTR}%
+}
+
+\begin{document}
+
+\frontmatter
+\frontmatterpagenumber
+\input{../../shared/cover/cover}
+\BookletCover{frontmatter/cover}
+\input{../../shared/fa/frontmatter/title}
+\input{../../shared/fa/frontmatter/copyright}
+\tableofcontents
+\input{../../shared/fa/frontmatter/about-mathesis}
+\input{../../shared/fa/frontmatter/about-author}
+\input{../../shared/fa/frontmatter/acknowledgments}
+\input{../../shared/fa/frontmatter/how-to-read}
+\input{frontmatter/preface}
+
+\mainmatter
+\mainmatterpagenumber
+\input{chapters/chapter01}
+
+\backmatter
+\InputIfFileExists{backmatter/conclusion}{}{}
+\input{backmatter/note}
+\input{../../shared/fa/backmatter/references}
+\InputIfFileExists{backmatter/glossary}{}{}
+
+\end{document}
