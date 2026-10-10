@@ -74,8 +74,12 @@ booklet's `.conf` file sets, e.g. `Mamashli-Mathematical-Logic-EN.pdf`).
 
 ## License
 
-- **Original booklet content** is licensed under **CC BY-SA 4.0**, unless the individual copyright page says otherwise. See [`CONTENT-LICENSE.md`](./CONTENT-LICENSE.md) and the copyright page in each booklet.
-- **Source code, build scripts, and tooling** are licensed under the **MIT License** in [`LICENSE`](./LICENSE).
-- Third-party quotations, figures, and other material are excluded unless explicitly stated otherwise.
+Each booklet's original content is licensed under **CC BY-SA 4.0** ---
+share and adapt freely, including commercially, with attribution and under
+the same license. See [`CONTENT-LICENSE.md`](./CONTENT-LICENSE.md) and
+the copyright page in each booklet for details.
+
+Source code, build scripts, and tooling are licensed under the MIT License
+in [`LICENSE`](./LICENSE). Third-party material remains under its own terms.
 
 Source: <https://github.com/papyrxis/mathesis>
